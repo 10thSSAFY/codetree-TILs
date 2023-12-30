@@ -1,28 +1,21 @@
+def check(arr):
+    global res
+    for lst in arr:
+        tmp, cnt = -1, 0
+        for l in lst:
+            if tmp != l:
+                tmp, cnt = l, 0
+            cnt += 1
+            if cnt == m:
+                res += 1
+                break
+
+
 n, m = map(int, input().split())
-rows = [list(map(int, input().split())) for _ in range(n)]
-cols = [list(x) for x in zip(*rows)]
+arr = [tuple(map(int, input().split())) for _ in range(n)]
 
 res = 0
-for row in rows:
-    tmp, cnt = -1, 0
-    for r in row:
-        if tmp != r:
-            tmp = r
-            cnt = 0
-        cnt += 1
-        if cnt == m:
-            res += 1
-            break
-
-for col in cols:
-    tmp, cnt = -1, 0
-    for c in col:
-        if tmp != c:
-            tmp = c
-            cnt = 0
-        cnt += 1
-        if cnt == m:
-            res += 1
-            break
+check(arr)
+check(list(zip(*arr)))
 
 print(res)
