@@ -2,7 +2,7 @@ def do(i, j):
     global res
     gold = money = 0
 
-    for k in range(n):
+    for k in range(n+1):
         for r in range(-k, k+1):
             if i+r < 0 or n <= i+r:
                 continue
@@ -13,7 +13,7 @@ def do(i, j):
                     if arr[i+r][j+c] == 1:
                         gold += 1
                         money += m
-                        
+
         if money >= k*k + (k+1)*(k+1):
             res = max(res, gold)
 
