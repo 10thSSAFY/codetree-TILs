@@ -1,12 +1,12 @@
 N, M, P, C, D = map(int, input().split())
 Rr, Rc = map(int, input().split())
-santa = [False]
+santa = [False] * (P+1)
 
 for _ in range(P):
     Pn, Sr, Sc = map(int, input().split())
-    santa.append((Sr, Sc))
+    santa[Pn] = (Sr, Sc)
 
-stern = []
+stern = [0] * (P+1)
 santa_score = [0] * (P+1)
 for _ in range(M):
     tmp = (10000000, 0, 0)
@@ -21,6 +21,7 @@ for _ in range(M):
             tmp = (dist, Sr, Sc)
         elif tmp[0] == dist and tmp[1] == Sr and tmp[2] < Sc:
             tmp = (dist, Sr, Sc)
+
     Tr, Tc = 0, 0
     if Rr < tmp[1]:
         Rr += 1
@@ -37,8 +38,7 @@ for _ in range(M):
 
     if (Rr, Rc) in santa:
         santa_score[santa.index((Rr, Rc))] += C
-        stern.append(santa.index((Rr, Rc)))
-        stern.append(santa.index((Rr, Rc)))
+        stern[santa.index((Rr, Rc))] = 2
         temp_r = Rr + Tr * C
         temp_c = Rc + Tc * C
 
@@ -52,19 +52,19 @@ for _ in range(M):
                 if not (1 <= temp_temp_r <= N and 1 <= temp_temp_c <= N):
                     santa[num] = False
                     break
-                if (temp_temp_r, temp_temp_c) in santa:
+                if (temp_temp_r, temp_temp_c) in santa and (temp_temp_r, temp_temp_c) != santa[num]:
                     new_santa = santa.index((temp_temp_r, temp_temp_c))
                     santa[num] = (temp_temp_r, temp_temp_c)
-                    stack.append((temp_temp_r - temp_delta[0], temp_temp_c - temp_delta[1] ,new_santa))
+                    stack.append((temp_temp_r + Tr, temp_temp_c + Tc, new_santa))
                 else:
                     santa[num] = (temp_temp_r, temp_temp_c)
 
 
     for i in range(1, P+1):
+
         if not santa[i]:
             continue
-        if i in stern:
-            stern.remove(i)
+        if stern[i] > 0:
             continue
         min_dist = (Rr - santa[i][0]) ** 2 + (Rc - santa[i][1]) ** 2
         temp_r, temp_c, temp_delta = santa[i][0], santa[i][1], (0, 0)
@@ -82,10 +82,9 @@ for _ in range(M):
                 min_dist = (Rr - nr) ** 2 + (Rc - nc) ** 2
                 temp_r, temp_c, temp_delta = nr, nc, delta
 
-
         if (temp_r, temp_c) == (Rr, Rc):
             santa_score[i] += D
-            stern.append(i)
+            stern[i] = 2
             temp_r += -temp_delta[0] * D
             temp_c += -temp_delta[1] * D
 
@@ -98,7 +97,7 @@ for _ in range(M):
                 if not (1 <= temp_temp_r <= N and 1 <= temp_temp_c <= N):
                     santa[num] = False
                     break
-                if (temp_temp_r, temp_temp_c) in santa:
+                if (temp_temp_r, temp_temp_c) in santa and (temp_temp_r, temp_temp_c) != santa[num]:
                     new_santa = santa.index((temp_temp_r, temp_temp_c))
                     santa[num] = (temp_temp_r, temp_temp_c)
                     stack.append((temp_temp_r - temp_delta[0], temp_temp_c - temp_delta[1] ,new_santa))
@@ -108,5 +107,7 @@ for _ in range(M):
     for i in range(1, P+1):
         if santa[i]:
             santa_score[i] += 1
+        if stern[i] > 0:
+            stern[i] -= 1
 
 print(*santa_score[1:])
