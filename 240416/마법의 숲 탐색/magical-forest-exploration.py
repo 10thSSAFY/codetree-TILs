@@ -35,7 +35,7 @@ res = 0
 for _ in range(K):
     ci, di = map(int, input().split())
     ri = 1
-    pos = down(1, ci, di)
+    pos = down(-1, ci, di)
     if pos[0] <= 1:
         forest = []
     else:
