@@ -9,12 +9,14 @@ def count_alarm(c):
     while queue:
         node, depth = queue.popleft()
         if TREE[node][1] != -1:
-            if TREE[TREE[node][1]][4] == 1 and TREE[TREE[node][1]][3] >= depth + 1:
-                cnt += 1
+            if TREE[TREE[node][1]][4] == 1:
+                if TREE[TREE[node][1]][3] >= depth + 1:
+                    cnt += 1
                 queue.append((TREE[node][1], depth + 1))
         if TREE[node][2] != -1:
-            if TREE[TREE[node][2]][4] == 1 and TREE[TREE[node][2]][3] >= depth + 1:
-                cnt += 1
+            if TREE[TREE[node][2]][4] == 1:
+                if TREE[TREE[node][2]][3] >= depth + 1:
+                    cnt += 1
                 queue.append((TREE[node][2], depth + 1))
     print(cnt)
 
