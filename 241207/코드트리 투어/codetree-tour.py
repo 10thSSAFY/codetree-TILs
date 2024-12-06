@@ -50,6 +50,8 @@ def addPackage(id, revenue, dest):
 
 
 def dijkstra():
+    global D
+    D = [INF] * N
     visited = [False] * N
     D[Start] = 0
 
